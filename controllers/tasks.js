@@ -18,48 +18,29 @@ exports.getTasks_By_Id = AsyncWrapper( async (req, res) => {
       res.status(200).json({Task})     
 })
 
-exports.createTask =  async (req, res) => {
-    try {
+exports.createTask = AsyncWrapper(  async (req, res) => {
    const Task = await Tasks.create(req.body)
    res.status(200).json({Task})
-} catch(error){
-  res.status(500).json({
-    message: error
-  })
 }
-}
+)
 
-exports.updateTask = async (req, res) => {
-    try{
+exports.updateTask = AsyncWrapper( async (req, res) => {
         const {postBody} = req.body
     const {id:taskId} = req.params
     const Task = await Tasks.findOneAndUpdate({_id:taskId}, {postBody}, 
         {new: true})
-        // console.log('im Task')
     if (!Task){
-        // console.log('im ifff')
     res.status(404).json({message: 'Invalid user ID'})
     return
     }    
           res.status(200).json({Task})
-
-    } catch(error){
-        res.status(500).json({
-            message: error
-    })
 }
-}
+)
 
-exports.deleteTask = async (req, res) => {
-    try{
+exports.deleteTask = AsyncWrapper( async (req, res) => {
         const {id:taskId} = req.params
         const Task = await Tasks.findOneAndDelete({_id:taskId})
         console.log(Task)
        res.status(200).json({message: `Task with id ${taskId} was deleted`})
-       
-     } catch(error){
-        res.status(500).json({
-            message: error
-    })
 }
-}
+)
